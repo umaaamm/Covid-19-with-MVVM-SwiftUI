@@ -9,13 +9,39 @@
 import SwiftUI
 
 struct Home: View {
+    
+    @ObservedObject var homeViewModel : HomeViewModel = HomeViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView{
+            VStack {
+                if homeViewModel.summary != nil {
+                    StatisticView(summary: self.homeViewModel.summary!)
+                }
+                
+                RequirementView()
+            }
+            .padding([.trailing, .leading], 20)
+            
+        }
+        .background(Color("warnaku"))
+        .onAppear(perform: {
+            self.homeViewModel.showSummary()
+        })
     }
 }
 
-struct Home_Previews: PreviewProvider {
+
+struct Statistics_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        Group {
+            Home()
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            Home()
+                .previewDevice(PreviewDevice(rawValue: "iPhone XS Max"))
+                .previewDisplayName("iPhone XS Max")
+        }
     }
 }
